@@ -3,90 +3,90 @@
     "id": 1,
     "title": "Premium Fallback Product 1",
     "price": 109.95,
-    "description": "This is a high-quality fallback product shown when the external API is unavailable.",
+    "description": "High-performance wireless headphones with noise-canceling technology and premium materials.",
     "category": "electronics",
-    "image": "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
-    "rating": { "rate": 3.9, "count": 120 }
+    "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1000&auto=format&fit=crop",
+    "rating": { "rate": 4.5, "count": 120 }
   },
   {
     "id": 2,
     "title": "Premium Fallback Product 2",
     "price": 22.3,
-    "description": "A reliable alternative for your catalog during maintenance.",
+    "description": "Premium organic cotton minimalist t-shirt, designed for comfort and everyday style.",
     "category": "men's clothing",
-    "image": "https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg",
+    "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1000&auto=format&fit=crop",
     "rating": { "rate": 4.1, "count": 259 }
   },
   {
     "id": 3,
     "title": "Premium Fallback Product 3",
     "price": 55.99,
-    "description": "Essential product for your collection, always available through local storage.",
+    "description": "Refined slim-fit jacket for a modern silhouette, perfect for versatile daily wear.",
     "category": "men's clothing",
-    "image": "https://fakestoreapi.com/img/71li-ujtlUL._AC_UX679_.jpg",
+    "image": "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?q=80&w=1000&auto=format&fit=crop",
     "rating": { "rate": 4.7, "count": 500 }
   },
   {
     "id": 4,
     "title": "Premium Fallback Product 4",
     "price": 15.99,
-    "description": "Versatile item suitable for various needs.",
+    "description": "A classic essential everyday tee, crafted with breathability in mind.",
     "category": "men's clothing",
-    "image": "https://fakestoreapi.com/img/71YXzeWusdL._AC_UY879_.jpg",
+    "image": "https://images.unsplash.com/photo-1562157873-818bc0726f68?q=80&w=1000&auto=format&fit=crop",
     "rating": { "rate": 2.1, "count": 430 }
   },
   {
     "id": 5,
     "title": "Premium Fallback Product 5",
     "price": 695.0,
-    "description": "High-end luxury item for discerning customers.",
+    "description": "Elegant gold band with detailed craftsmanship, a timeless piece for any collection.",
     "category": "jewelery",
-    "image": "https://fakestoreapi.com/img/71pWzhdJNwL._AC_UL640_QL65_ML3_.jpg",
+    "image": "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=1000&auto=format&fit=crop",
     "rating": { "rate": 4.6, "count": 400 }
   },
   {
     "id": 6,
     "title": "Premium Fallback Product 6",
     "price": 168.0,
-    "description": "Solid gold design that never goes out of style.",
+    "description": "Lustrous white gold wedding band, precision-crafted for long-lasting brilliance.",
     "category": "jewelery",
-    "image": "https://fakestoreapi.com/img/61sbMiWDoxL._AC_UL640_QL65_ML3_.jpg",
+    "image": "https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=1000&auto=format&fit=crop",
     "rating": { "rate": 3.9, "count": 70 }
   },
   {
     "id": 7,
     "title": "Premium Fallback Product 7",
     "price": 9.99,
-    "description": "Affordable and stylish option for everyday wear.",
+    "description": "Contemporary minimalist ring in sterling silver, embodying simple sophistication.",
     "category": "jewelery",
-    "image": "https://fakestoreapi.com/img/71YAIFU48IL._AC_UL640_QL65_ML3_.jpg",
+    "image": "https://images.unsplash.com/photo-1535633302704-b02f4faad747?q=80&w=1000&auto=format&fit=crop",
     "rating": { "rate": 3.0, "count": 400 }
   },
   {
     "id": 8,
     "title": "Premium Fallback Product 8",
     "price": 10.99,
-    "description": "Exquisite handcrafted accessory.",
+    "description": "Hand-forged silver-plated brass necklace with artisanal pendant detail.",
     "category": "jewelery",
-    "image": "https://fakestoreapi.com/img/51UDEzMJVpL._AC_UL640_QL65_ML3_.jpg",
+    "image": "https://images.unsplash.com/photo-1535633302704-b02f4faad747?q=80&w=1000&auto=format&fit=crop",
     "rating": { "rate": 1.9, "count": 100 }
   },
   {
     "id": 9,
     "title": "Premium Fallback Product 9",
     "price": 64.0,
-    "description": "High-capacity storage for your digital life.",
+    "description": "High-speed portable SSD with ample space for all your digital creative assets.",
     "category": "electronics",
-    "image": "https://fakestoreapi.com/img/61IBBVJvSDL._AC_SY879_.jpg",
+    "image": "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?q=80&w=1000&auto=format&fit=crop",
     "rating": { "rate": 3.3, "count": 203 }
   },
   {
     "id": 10,
     "title": "Premium Fallback Product 10",
     "price": 109.0,
-    "description": "Reliable portable drive for on-the-go professionals.",
+    "description": "Reliable enterprise-grade external drive for high-integrity data storage.",
     "category": "electronics",
-    "image": "https://fakestoreapi.com/img/61U7T1koQqL._AC_SX679_.jpg",
+    "image": "https://images.unsplash.com/photo-1563770660941-20978e870e26?q=80&w=1000&auto=format&fit=crop",
     "rating": { "rate": 2.9, "count": 470 }
   }
 ]
