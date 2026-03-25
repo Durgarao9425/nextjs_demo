@@ -8,27 +8,35 @@ interface HomeProps {
   products: Product[];
 }
 
+import fallbackProducts from '@/data/fallback-products.json';
+
 export const getServerSideProps: GetServerSideProps<HomeProps> = async () => {
+  const API_URL = 'https://fakestoreapi.com/products';
+  
   try {
-    const res = await fetch('https://fakestoreapi.com/products');
+    const res = await fetch(API_URL, {
+        headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+        }
+    });
     
     if (!res.ok) {
-        console.error(`Failed to fetch from FakeStoreAPI: Status ${res.status}`);
-        return { props: { products: [] } };
+        console.error(`Home Page: API returned error status ${res.status}. Using fallback data.`);
+        return { props: { products: fallbackProducts as Product[] } };
     }
 
     const contentType = res.headers.get('content-type');
     if (!contentType || !contentType.includes('application/json')) {
       const text = await res.text();
-      console.error('Home Page: Expected JSON, but received:', text.substring(0, 100));
-      return { props: { products: [] } };
+      console.error('Home Page: Expected JSON but received HTML. Using fallback data.');
+      return { props: { products: fallbackProducts as Product[] } };
     }
 
     const products: Product[] = await res.json();
     return { props: { products } };
   } catch (error) {
-    console.error('Home Page: Error in getServerSideProps:', error);
-    return { props: { products: [] } };
+    console.error('Home Page: Fetch exception. Using fallback data.', error);
+    return { props: { products: fallbackProducts as Product[] } };
   }
 };
 

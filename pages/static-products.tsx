@@ -13,16 +13,24 @@ interface StaticProps {
  * Benefits: Extremely fast delivery via CDN, reduced server resources, 
  * best SEO for static data.
  */
+import fallbackProducts from '@/data/fallback-products.json';
+
 export const getStaticProps: GetStaticProps<StaticProps> = async () => {
+  const API_URL = 'https://fakestoreapi.com/products';
+  
   try {
-    const res = await fetch('https://fakestoreapi.com/products');
+    const res = await fetch(API_URL, {
+        headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+        }
+    });
     
     // Check if the response is successful
     if (!res.ok) {
-      console.error(`Failed to fetch from FakeStoreAPI: Status ${res.status}`);
+      console.error(`SSG Page: API returned status ${res.status}. Falling back to local data.`);
       return { 
-        props: { products: [] },
-        revalidate: 10 // Retry later if this was ISR
+        props: { products: fallbackProducts as Product[] },
+        revalidate: 10
       };
     }
 
@@ -30,9 +38,9 @@ export const getStaticProps: GetStaticProps<StaticProps> = async () => {
     const contentType = res.headers.get('content-type');
     if (!contentType || !contentType.includes('application/json')) {
       const text = await res.text();
-      console.error('Expected JSON, but received:', text.substring(0, 100));
+      console.error('SSG Page: Expected JSON but received HTML. Falling back to local data.');
       return { 
-        props: { products: [] },
+        props: { products: fallbackProducts as Product[] },
         revalidate: 10
       };
     }
@@ -46,10 +54,10 @@ export const getStaticProps: GetStaticProps<StaticProps> = async () => {
       revalidate: 60, // ISR: Refresh data every 60 seconds
     };
   } catch (error) {
-    console.error('Error during getStaticProps:', error);
+    console.error('SSG Page: Fetch error. Falling back to local data.', error);
     return {
       props: {
-        products: [],
+        products: fallbackProducts as Product[],
       },
       revalidate: 10,
     };

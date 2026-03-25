@@ -12,42 +12,53 @@ interface ProductDetailProps {
  * This page uses dynamic parameters ([id]) to fetch data from the server 
  * on each request.
  */
+import fallbackProducts from '@/data/fallback-products.json';
+
 export const getServerSideProps: GetServerSideProps<ProductDetailProps> = async (context) => {
   const { id } = context.params as { id: string };
+  const API_URL = `https://fakestoreapi.com/products/${id}`;
 
   try {
-    const res = await fetch(`https://fakestoreapi.com/products/${id}`);
+    const res = await fetch(API_URL, {
+        headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+        }
+    });
     
-    if (!res.ok) {
-        console.error(`Failed to fetch product ${id}: Status ${res.status}`);
-        return { notFound: true };
+    if (res.ok) {
+        const contentType = res.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+            const product: Product = await res.json();
+            if (product) {
+                return { props: { product } };
+            }
+        }
     }
 
-    const contentType = res.headers.get('content-type');
-    if (!contentType || !contentType.includes('application/json')) {
-      const text = await res.text();
-      console.error(`Product ${id}: Expected JSON, but received:`, text.substring(0, 100));
-      return { notFound: true };
-    }
-
-    const product: Product = await res.json();
+    // Fallback logic if API fails or returns non-JSON/empty
+    console.log(`Product ${id}: API failed. Checking local fallback data.`);
+    const fallbackProduct = fallbackProducts.find(p => p.id.toString() === id);
     
-    if (!product) {
+    if (fallbackProduct) {
       return {
-        notFound: true,
+        props: {
+          product: fallbackProduct as Product,
+        },
       };
     }
 
-    return {
-      props: {
-        product,
-      },
-    };
+    return { notFound: true };
   } catch (error) {
     console.error('Error fetching product:', error);
-    return {
-      notFound: true,
-    };
+    const fallbackProduct = fallbackProducts.find(p => p.id.toString() === id);
+    if (fallbackProduct) {
+      return {
+        props: {
+          product: fallbackProduct as Product,
+        },
+      };
+    }
+    return { notFound: true };
   }
 };
 
