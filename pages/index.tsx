@@ -9,9 +9,27 @@ interface HomeProps {
 }
 
 export const getServerSideProps: GetServerSideProps<HomeProps> = async () => {
-  const res = await fetch('https://fakestoreapi.com/products');
-  const products: Product[] = await res.json();
-  return { props: { products } };
+  try {
+    const res = await fetch('https://fakestoreapi.com/products');
+    
+    if (!res.ok) {
+        console.error(`Failed to fetch from FakeStoreAPI: Status ${res.status}`);
+        return { props: { products: [] } };
+    }
+
+    const contentType = res.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      const text = await res.text();
+      console.error('Home Page: Expected JSON, but received:', text.substring(0, 100));
+      return { props: { products: [] } };
+    }
+
+    const products: Product[] = await res.json();
+    return { props: { products } };
+  } catch (error) {
+    console.error('Home Page: Error in getServerSideProps:', error);
+    return { props: { products: [] } };
+  }
 };
 
 export default function Home({ products }: HomeProps) {

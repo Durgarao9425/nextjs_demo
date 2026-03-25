@@ -17,8 +17,21 @@ export const getServerSideProps: GetServerSideProps<ProductDetailProps> = async 
 
   try {
     const res = await fetch(`https://fakestoreapi.com/products/${id}`);
-    const product: Product = await res.json();
+    
+    if (!res.ok) {
+        console.error(`Failed to fetch product ${id}: Status ${res.status}`);
+        return { notFound: true };
+    }
 
+    const contentType = res.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      const text = await res.text();
+      console.error(`Product ${id}: Expected JSON, but received:`, text.substring(0, 100));
+      return { notFound: true };
+    }
+
+    const product: Product = await res.json();
+    
     if (!product) {
       return {
         notFound: true,

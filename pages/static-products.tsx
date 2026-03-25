@@ -14,15 +14,46 @@ interface StaticProps {
  * best SEO for static data.
  */
 export const getStaticProps: GetStaticProps<StaticProps> = async () => {
-  const res = await fetch('https://fakestoreapi.com/products');
-  const products: Product[] = await res.json();
+  try {
+    const res = await fetch('https://fakestoreapi.com/products');
+    
+    // Check if the response is successful
+    if (!res.ok) {
+      console.error(`Failed to fetch from FakeStoreAPI: Status ${res.status}`);
+      return { 
+        props: { products: [] },
+        revalidate: 10 // Retry later if this was ISR
+      };
+    }
 
-  return {
-    props: {
-      products,
-    },
-    // Optional: revalidate: 60 (ISR) re-generates after 60 seconds
-  };
+    // Check if the content-type is JSON before parsing
+    const contentType = res.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      const text = await res.text();
+      console.error('Expected JSON, but received:', text.substring(0, 100));
+      return { 
+        props: { products: [] },
+        revalidate: 10
+      };
+    }
+
+    const products: Product[] = await res.json();
+
+    return {
+      props: {
+        products,
+      },
+      revalidate: 60, // ISR: Refresh data every 60 seconds
+    };
+  } catch (error) {
+    console.error('Error during getStaticProps:', error);
+    return {
+      props: {
+        products: [],
+      },
+      revalidate: 10,
+    };
+  }
 };
 
 export default function StaticProducts({ products }: StaticProps) {
