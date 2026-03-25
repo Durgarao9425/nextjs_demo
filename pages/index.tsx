@@ -1,78 +1,103 @@
-import Image from "next/image";
-import { Geist, Geist_Mono } from "next/font/google";
+import { useState } from 'react';
+import { GetServerSideProps } from 'next';
+import Image from 'next/image';
+import Link from 'next/link';
+import { Product } from '@/types/product';
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+interface HomeProps {
+  products: Product[];
+}
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+export const getServerSideProps: GetServerSideProps<HomeProps> = async () => {
+  const res = await fetch('https://fakestoreapi.com/products');
+  const products: Product[] = await res.json();
+  return { props: { products } };
+};
 
-export default function Home() {
+export default function Home({ products }: HomeProps) {
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredProducts = products.filter(product =>
+    product.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
-    <div
-      className={`${geistSans.className} ${geistMono.className} flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black`}
-    >
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the index.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+    <div className="space-y-10">
+      {/* 🌟 New Hero-style Search Area */}
+      <div className="relative pt-6 pb-2">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div className="space-y-2">
+            <h1 className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight">
+              Premium <span className="text-blue-600 font-outline-2">Catalog</span>
+            </h1>
+            <p className="text-gray-500 font-medium text-sm sm:text-base">
+              Explore {products.length} curated items from our global partners.
+            </p>
+          </div>
+
+          {/* Sleek Minimalist Search Bar */}
+          <div className="w-full md:max-w-md relative group">
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-blue-600 transition-colors">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+            <input
+              type="text"
+              placeholder="Filter by name..."
+              className="w-full pl-11 pr-4 py-3 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-blue-600 rounded-2xl outline-none transition-all font-semibold text-gray-800 placeholder:text-gray-400 shadow-sm"
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs/pages/getting-started?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          </div>
         </div>
-      </main>
+      </div>
+
+      {/* 📦 Optimized Responsive Grid */}
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-8">
+        {filteredProducts.map((product) => (
+          <Link key={product.id} href={`/product/${product.id}`} className="group flex flex-col h-full">
+            <div className="bg-white rounded-[1.5rem] sm:rounded-[2rem] border border-gray-100 p-2 sm:p-4 hover:shadow-2xl transition-all duration-500 h-full flex flex-col">
+              {/* Product Image */}
+              <div className="aspect-[4/5] relative bg-gray-50 rounded-[1.2rem] sm:rounded-[1.5rem] overflow-hidden flex items-center justify-center mb-4">
+                <Image
+                  src={product.image}
+                  alt={product.title}
+                  fill
+                  className="object-contain p-4 sm:p-8 group-hover:scale-110 transition-transform duration-700"
+                />
+                <div className="absolute bottom-3 left-3">
+                  <span className="px-2 py-1 rounded-lg bg-white/90 backdrop-blur shadow-sm text-[9px] font-black uppercase tracking-widest text-gray-600 whitespace-nowrap">
+                    {product.category}
+                  </span>
+                </div>
+              </div>
+
+              {/* Product Info */}
+              <div className="px-2 pb-2 flex-grow flex flex-col">
+                <h3 className="text-sm sm:text-base font-bold text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2 leading-tight flex-grow">
+                  {product.title}
+                </h3>
+                <div className="mt-4 flex items-center justify-between">
+                  <div className="flex flex-col">
+                    <span className="text-[10px] text-gray-400 font-bold uppercase leading-none mb-1">Price</span>
+                    <span className="text-lg sm:text-xl font-black text-gray-900">${product.price.toFixed(2)}</span>
+                  </div>
+                  <div className="bg-blue-600 p-2 rounded-xl text-white opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M12 4v16m8-8H4" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Link>
+        ))}
+        {filteredProducts.length === 0 && (
+          <div className="col-span-full text-center py-20 animate-pulse">
+            <p className="text-gray-400 font-bold italic">No items matching your search...</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
